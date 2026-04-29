@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct ContentView: View {
+    @Environment(NetworkClient.self) private var networkClient
     var body: some View {
         VStack {
             Image(systemName: "globe")
@@ -15,7 +16,8 @@ struct ContentView: View {
                 .foregroundStyle(.tint)
             Text("Hello, world!")
         }
-        .padding()
+        
+        
     }
 }
 
