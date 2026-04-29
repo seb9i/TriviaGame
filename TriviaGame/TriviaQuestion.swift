@@ -9,7 +9,10 @@
     // UI BASED
 //  Created by Student on 4/28/26.
 //
+import SwiftUI
 
-struct TriviaQuestion {
-    
+struct TriviaQuestion: View {
+    var body: some View {
+        Text("Hello")
+    }
 }

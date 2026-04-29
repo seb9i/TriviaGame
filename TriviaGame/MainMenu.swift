@@ -28,7 +28,7 @@ struct MainMenu: View {
                 .padding(.horizontal, 32)
             }
             .navigationDestination(isPresented: $navigateToGame) {
-                Text("Game View")
+                TriviaQuestion()
                     .navigationTitle("Trivia")
             }
         }
