@@ -8,16 +8,8 @@
 import SwiftUI
 
 struct ContentView: View {
-    @Environment(NetworkClient.self) private var networkClient
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("IOS PROJECT 2!!!")
-        }
-        
-        
+        MainMenu()
     }
 }
 
