@@ -10,3 +10,7 @@
 // by the trivia API (e.g., list of questions).
 //
 // Does NOT contain any networking or game logic.
+
+struct Trivia {
+    
+}

@@ -6,3 +6,7 @@
 // and directs the user accordingly.
 //
 // UI-focused, not responsible for data or logic.
+
+struct MainMenu {
+    
+}

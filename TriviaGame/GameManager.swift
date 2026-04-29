@@ -6,3 +6,7 @@
 // track score, and validate answers.
 //
 // Contains the core game logic.
+
+struct GameManager {
+    
+}

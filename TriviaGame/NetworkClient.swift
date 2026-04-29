@@ -6,4 +6,7 @@
 // and converting them into usable data for the app.
 // Does NOT contain any game logic.
 
+struct NetworkClient {
+    
+}
 
