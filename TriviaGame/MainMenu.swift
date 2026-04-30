@@ -12,12 +12,13 @@ import SwiftUI
 struct MainMenu: View {
     @State private var navigateToGame = false
     @State private var pulseTitle = false
+    @State private var network = NetworkClient()
 
     var body: some View {
         NavigationStack {
             ZStack {
                 background
-                VStack(spacing: 0) {
+                VStack {
                     Spacer()
                     titleSection
                     Spacer()
@@ -28,8 +29,18 @@ struct MainMenu: View {
                 .padding(.horizontal, 32)
             }
             .navigationDestination(isPresented: $navigateToGame) {
-                TriviaQuestion()
-                    .navigationTitle("Trivia")
+                if let firstQuestion = network.triviaQuestions.first {
+                    TriviaQuestion(
+                        trivia: firstQuestion
+                    ) { correct in
+                        print("Answer was \(correct)")
+                    }
+                } else {
+                    ProgressView("Loading...")
+                        .task {
+                            await network.getNowPlaying()
+                        }
+                }
             }
         }
     }
@@ -90,24 +101,23 @@ struct MainMenu: View {
                 icon: "play.fill",
                 style: .primary
             ) {
-                navigateToGame = true
+                Task {
+                    await network.getNowPlaying()
+                    navigateToGame = true
+                }
             }
 
             MenuButton(
                 title: "How to Play",
                 icon: "questionmark.circle",
                 style: .secondary
-            ) {
-                // add instructions sheet
-            }
+            ) {}
 
             MenuButton(
                 title: "Leaderboard",
                 icon: "trophy",
                 style: .secondary
-            ) {
-                // add show leaderboard
-            }
+            ) {}
         }
     }
 
