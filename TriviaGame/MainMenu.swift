@@ -12,7 +12,7 @@ import SwiftUI
 struct MainMenu: View {
     @State private var navigateToGame = false
     @State private var pulseTitle = false
-    @State private var network = NetworkClient()
+    @State private var gameManager = GameManager(network: NetworkClient())
 
     var body: some View {
         NavigationStack {
@@ -29,17 +29,29 @@ struct MainMenu: View {
                 .padding(.horizontal, 32)
             }
             .navigationDestination(isPresented: $navigateToGame) {
-                if let firstQuestion = network.triviaQuestions.first {
-                    TriviaQuestion(
-                        trivia: firstQuestion
-                    ) { correct in
-                        print("Answer was \(correct)")
-                    }
-                } else {
-                    ProgressView("Loading...")
-                        .task {
-                            await network.getNowPlaying()
+                Group {
+                    if gameManager.isGameOver {
+                        VStack(spacing: 20) {
+                            Text("Game Over")
+                                .font(.largeTitle)
+                                .foregroundColor(.white)
+                            
+                            Text("Score: \(gameManager.score)")
+                                .foregroundColor(.white)
+                            
+                            Button("Play Again") {
+                                Task {
+                                    await gameManager.startGame()
+                                }
+                            }
                         }
+                    } else if let question = gameManager.currentQuestion {
+                        TriviaQuestion(trivia: question) { correct in
+                            gameManager.submitAnswer(correct: correct)
+                        }
+                    } else {
+                        ProgressView("Loading...")
+                    }
                 }
             }
         }
@@ -102,7 +114,7 @@ struct MainMenu: View {
                 style: .primary
             ) {
                 Task {
-                    await network.getNowPlaying()
+                    await gameManager.startGame()
                     navigateToGame = true
                 }
             }

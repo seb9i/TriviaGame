@@ -33,6 +33,11 @@ struct TriviaQuestion: View {
             .padding(.horizontal, 24)
         }
         .onAppear { buildAnswers() }
+        .onChange(of: trivia.question) {
+            selectedAnswer = nil
+            revealed = false
+            buildAnswers()
+        }
     }
 
     private var background: some View {
