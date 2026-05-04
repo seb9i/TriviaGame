@@ -35,10 +35,10 @@ struct MainMenu: View {
                         VStack(spacing: 20) {
                             Text("Game Over")
                                 .font(.largeTitle)
-                                .foregroundColor(.white)
+                                .foregroundColor(.secondary)
                             
                             Text("Score: \(gameManager.score)")
-                                .foregroundColor(.white)
+                                .foregroundColor(.secondary)
                             
                             Button("Play Again") {
                                 Task {
