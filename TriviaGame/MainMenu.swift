@@ -13,6 +13,7 @@ struct MainMenu: View {
     @State private var navigateToGame = false
     @State private var pulseTitle = false
     @State private var gameManager = GameManager(network: NetworkClient())
+    @State private var navigateToSettings = false
 
     var body: some View {
         NavigationStack {
@@ -53,6 +54,9 @@ struct MainMenu: View {
                         ProgressView("Loading...")
                     }
                 }
+            }
+            .navigationDestination(isPresented: $navigateToSettings) {
+                Settings()
             }
         }
     }
@@ -117,6 +121,14 @@ struct MainMenu: View {
                     await gameManager.startGame()
                     navigateToGame = true
                 }
+            }
+            
+            MenuButton(
+                title: "Settings",
+                icon: "gearshape",
+                style: .secondary
+            ) {
+                navigateToSettings = true
             }
 
             MenuButton(
