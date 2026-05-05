@@ -32,20 +32,17 @@ struct MainMenu: View {
             .navigationDestination(isPresented: $navigateToGame) {
                 Group {
                     if gameManager.isGameOver {
-                        VStack(spacing: 20) {
-                            Text("Game Over")
-                                .font(.largeTitle)
-                                .foregroundColor(.secondary)
-                            
-                            Text("Score: \(gameManager.score)")
-                                .foregroundColor(.secondary)
-                            
-                            Button("Play Again") {
+                        GameOverView(
+                            score: gameManager.score,
+                            onPlayAgain: {
                                 Task {
                                     await gameManager.startGame()
                                 }
+                            },
+                            onMainMenu: {
+                                navigateToGame = false
                             }
-                        }
+                        )
                     } else if let question = gameManager.currentQuestion {
                         TriviaQuestion(trivia: question) { correct in
                             gameManager.submitAnswer(correct: correct)
@@ -149,73 +146,6 @@ struct MainMenu: View {
         Text("Questions sourced from opentdb.com")
             .font(.system(size: 11, design: .monospaced))
             .foregroundColor(.white.opacity(0.20))
-    }
-}
-
-private enum MenuButtonStyle { case primary, secondary }
-
-private struct MenuButton: View {
-    let title: String
-    let icon: String
-    let style: MenuButtonStyle
-    let action: () -> Void
-
-    @State private var isPressed = false
-
-    var body: some View {
-        Button(action: action) {
-            HStack(spacing: 12) {
-                Image(systemName: icon)
-                    .font(.system(size: 16, weight: .semibold))
-                Text(title)
-                    .font(.system(size: 18, weight: .bold, design: .rounded))
-                Spacer()
-                Image(systemName: "chevron.right")
-                    .font(.system(size: 13, weight: .semibold))
-                    .opacity(0.5)
-            }
-            .padding(.horizontal, 24)
-            .padding(.vertical, 18)
-            .background(buttonBackground)
-            .clipShape(RoundedRectangle(cornerRadius: 16))
-            .overlay(
-                RoundedRectangle(cornerRadius: 16)
-                    .stroke(borderColor, lineWidth: 1)
-            )
-            .foregroundColor(foregroundColor)
-            .scaleEffect(isPressed ? 0.97 : 1.0)
-            .animation(.spring(response: 0.2, dampingFraction: 0.6), value: isPressed)
-        }
-        .buttonStyle(.plain)
-        .simultaneousGesture(
-            DragGesture(minimumDistance: 0)
-                .onChanged { _ in isPressed = true }
-                .onEnded   { _ in isPressed = false }
-        )
-    }
-
-    @ViewBuilder
-    private var buttonBackground: some View {
-        switch style {
-        case .primary:
-            LinearGradient(
-                colors: [Color(red: 0.55, green: 0.35, blue: 1.0),
-                         Color(red: 0.35, green: 0.20, blue: 0.85)],
-                startPoint: .topLeading, endPoint: .bottomTrailing
-            )
-        case .secondary:
-            Color.white.opacity(0.07)
-        }
-    }
-
-    private var borderColor: Color {
-        style == .primary
-            ? Color.purple.opacity(0.6)
-            : Color.white.opacity(0.12)
-    }
-
-    private var foregroundColor: Color {
-        style == .primary ? .white : .white.opacity(0.80)
     }
 }
 
