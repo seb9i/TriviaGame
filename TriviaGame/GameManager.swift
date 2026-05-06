@@ -13,7 +13,13 @@ import Foundation
 class GameManager {
     
     private let network: NetworkClient
-    var difficultyIndex: Double = UserDefaults.standard.double(forKey: "difficultyIndex")
+    var difficultyIndex: Int {
+        UserDefaults.standard.integer(forKey: "difficultyIndex")
+    }
+
+    var categoryId: String {
+        UserDefaults.standard.string(forKey: "categoryID") ?? "9"
+    }
 
     private(set) var score: Int = 0
     private(set) var currentIndex: Int = 0
@@ -31,6 +37,7 @@ class GameManager {
         score = 0
         currentIndex = 0
         isGameOver = false
+
         var difficultyText: String {
             switch Int(difficultyIndex) {
             case 0: return "easy"
@@ -40,6 +47,7 @@ class GameManager {
             }
         }
         await network.changeDifficulty(to: difficultyText)
+        await network.changeCategory(to: categoryId)
         await network.getNowPlaying()
     }
     

@@ -1,19 +1,37 @@
 import SwiftUI
 
-struct CategoryResponse: Decodable {
-    let trivia_categories: [TriviaCategory]
-}
 
-struct TriviaCategory: Identifiable, Decodable {
-    let id: Int
-    let name: String
-}
 
 struct Settings: View {
     @AppStorage("difficultyIndex") private var difficultyIndex: Int = 0
-    @AppStorage("categoryID") private var selectedCategoryID: Int = 9
+    @AppStorage("categoryID") private var selectedCategoryID: String = "9"
 
-    @State private var categories: [TriviaCategory] = []
+    @State private var triviaCategories: [String: String] = [
+        "General Knowledge": "9",
+        "Entertainment: Books": "10",
+        "Entertainment: Film": "11",
+        "Entertainment: Music": "12",
+        "Entertainment: Musicals & Theatres": "13",
+        "Entertainment: Television": "14",
+        "Entertainment: Video Games": "15",
+        "Entertainment: Board Games": "16",
+        "Science & Nature": "17",
+        "Science: Computers": "18",
+        "Science: Mathematics": "19",
+        "Mythology": "20",
+        "Sports": "21",
+        "Geography": "22",
+        "History": "23",
+        "Politics": "24",
+        "Art": "25",
+        "Celebrities": "26",
+        "Animals": "27",
+        "Vehicles": "28",
+        "Entertainment: Comics": "29",
+        "Science: Gadgets": "30",
+        "Entertainment: Japanese Anime & Manga": "31",
+        "Entertainment: Cartoon & Animations": "32"
+    ]
     @State private var isLoading = false
 
     private let difficulties = ["Easy", "Medium", "Hard"]
@@ -72,16 +90,18 @@ struct Settings: View {
                     } else {
                         ScrollView(.horizontal, showsIndicators: false) {
                             HStack(spacing: 12) {
-                                ForEach(categories) { category in
+                                
+                                ForEach(Array(triviaCategories.keys).sorted(), id: \.self) { category in
+                                    let categoryID = triviaCategories[category] ?? ""
                                     Button {
-                                        selectedCategoryID = category.id
+                                        selectedCategoryID = categoryID
                                     } label: {
-                                        Text(category.name)
+                                        Text(category)
                                             .font(.system(size: 14, weight: .bold))
                                             .padding(.horizontal, 14)
                                             .padding(.vertical, 10)
                                             .background(
-                                                selectedCategoryID == category.id
+                                                selectedCategoryID == categoryID
                                                 ? Color.purple
                                                 : Color.white.opacity(0.08)
                                             )
@@ -101,32 +121,8 @@ struct Settings: View {
             }
             .padding(24)
         }
-        .task {
-            await loadCategories()
-        }
+        
     }
 
-    func loadCategories() async {
-        guard categories.isEmpty else { return }
-        guard let url = URL(string: "https://opentdb.com/api_category.php") else { return }
-
-        do {
-            isLoading = true
-            let (data, _) = try await URLSession.shared.data(from: url)
-            let decoded = try JSONDecoder().decode(CategoryResponse.self, from: data)
-            categories = decoded.trivia_categories
-            isLoading = false
-        } catch {
-            print("Failed to load categories:", error)
-            isLoading = false
-
-            categories = [
-                .init(id: 9, name: "General Knowledge"),
-                .init(id: 21, name: "Sports"),
-                .init(id: 23, name: "History"),
-                .init(id: 17, name: "Science"),
-                .init(id: 18, name: "Computers")
-            ]
-        }
-    }
+    
 }
