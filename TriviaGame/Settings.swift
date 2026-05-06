@@ -5,6 +5,7 @@ import SwiftUI
 struct Settings: View {
     @AppStorage("difficultyIndex") private var difficultyIndex: Int = 0
     @AppStorage("categoryID") private var selectedCategoryID: String = "9"
+    @AppStorage("username") private var username: String = ""
 
     @State private var triviaCategories: [String: String] = [
         "General Knowledge": "9",
@@ -53,6 +54,23 @@ struct Settings: View {
                     .font(.system(size: 42, weight: .black, design: .rounded))
                     .foregroundColor(.white)
 
+                VStack(alignment: .leading, spacing: 16) {
+                    Text("Username")
+                        .foregroundColor(.white.opacity(0.8))
+
+                    TextField("Enter your username", text: $username)
+                        .font(.system(size: 16, weight: .bold))
+                        .padding()
+                        .background(Color.white.opacity(0.08))
+                        .foregroundColor(.white)
+                        .clipShape(RoundedRectangle(cornerRadius: 12))
+                        .autocapitalization(.none)
+                        .disableAutocorrection(true)
+                }
+                .padding()
+                .background(Color.white.opacity(0.08))
+                .clipShape(RoundedRectangle(cornerRadius: 16))
+                
                 VStack(spacing: 20) {
                     Text("Difficulty")
                         .foregroundColor(.white.opacity(0.8))
