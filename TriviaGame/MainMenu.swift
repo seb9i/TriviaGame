@@ -14,21 +14,22 @@ struct MainMenu: View {
     @State private var pulseTitle = false
     @State private var gameManager = GameManager(network: NetworkClient())
     @State private var navigateToSettings = false
-    @State private var navigateToLeaderboard = false
+    
+    
 
     var body: some View {
+        
         NavigationStack {
             ZStack {
                 background
-                VStack {
+                VStack(spacing: 32) {
                     Spacer()
                     titleSection
-                    Spacer()
                     buttonStack
-                    Spacer(minLength: 60)
-                    footerNote
+                    Spacer()
                 }
-                .padding(.horizontal, 32)
+                .padding(.horizontal, 24)
+                
             }
             .navigationDestination(isPresented: $navigateToGame) {
                 Group {
@@ -56,22 +57,12 @@ struct MainMenu: View {
             .navigationDestination(isPresented: $navigateToSettings) {
                 Settings()
             }
-            .navigationDestination(isPresented: $navigateToLeaderboard) {
-                LeaderboardView()
-            }
         }
     }
 
     private var background: some View {
-        LinearGradient(
-            colors: [
-                Color(red: 0.06, green: 0.06, blue: 0.14),
-                Color(red: 0.10, green: 0.04, blue: 0.22)
-            ],
-            startPoint: .topLeading,
-            endPoint: .bottomTrailing
-        )
-        .ignoresSafeArea()
+        Color(red: 0.96, green: 0.94, blue: 0.90) // paper-like
+            .ignoresSafeArea()
     }
 
     private var titleSection: some View {
@@ -79,35 +70,31 @@ struct MainMenu: View {
             
 
             Text("TRIVIA")
-                .font(.system(size: 52, weight: .black, design: .rounded))
+                .font(.custom("MagicSaturday", size: 52))
                 .foregroundStyle(
                     LinearGradient(
-                        colors: [.white, Color(red: 0.76, green: 0.60, blue: 1.0)],
+                        colors: [Color(red: 0.2, green: 0.2, blue: 0.3)],
                         startPoint: .topLeading,
                         endPoint: .bottomTrailing
                     )
                 )
                 .tracking(8)
+               
+
             Text("Game")
-                .font(.system(size: 72, weight: .black, design: .rounded))
+                .font(.custom("MagicSaturday", size: 72))
                 .foregroundStyle(
                     LinearGradient(
-                        colors: [.white, Color(red: 0.76, green: 0.60, blue: 1.0)],
+                        colors: [Color(red: 0.2, green: 0.2, blue: 0.3)],
                         startPoint: .topLeading,
                         endPoint: .bottomTrailing
                     )
                 )
-                .scaleEffect(pulseTitle ? 1.08 : 1.0)
-                .animation(
-                    .easeInOut(duration: 1.4).repeatForever(autoreverses: true),
-                    value: pulseTitle
-                )
+                .opacity(pulseTitle ? 0.85 : 1.0)
+                .animation(.easeInOut(duration: 2.0).repeatForever(autoreverses: true), value: pulseTitle)
                 .onAppear { pulseTitle = true }
 
-            Text("Open Trivia DB")
-                .font(.system(size: 13, weight: .medium, design: .monospaced))
-                .foregroundColor(.white.opacity(0.35))
-                .padding(.top, 4)
+            
         }
     }
 
@@ -142,17 +129,11 @@ struct MainMenu: View {
                 title: "Leaderboard",
                 icon: "trophy",
                 style: .secondary
-            ) {
-                navigateToLeaderboard = true
-            }
+            ) {}
         }
     }
 
-    private var footerNote: some View {
-        Text("Questions sourced from opentdb.com")
-            .font(.system(size: 11, design: .monospaced))
-            .foregroundColor(.white.opacity(0.20))
-    }
+    
 }
 
 #Preview {
