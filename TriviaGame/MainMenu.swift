@@ -14,6 +14,7 @@ struct MainMenu: View {
     @State private var pulseTitle = false
     @State private var gameManager = GameManager(network: NetworkClient())
     @State private var navigateToSettings = false
+    @State private var navigateToLeaderboard = false
 
     var body: some View {
         NavigationStack {
@@ -54,6 +55,9 @@ struct MainMenu: View {
             }
             .navigationDestination(isPresented: $navigateToSettings) {
                 Settings()
+            }
+            .navigationDestination(isPresented: $navigateToLeaderboard) {
+                LeaderboardView()
             }
         }
     }
@@ -138,7 +142,9 @@ struct MainMenu: View {
                 title: "Leaderboard",
                 icon: "trophy",
                 style: .secondary
-            ) {}
+            ) {
+                navigateToLeaderboard = true
+            }
         }
     }
 
