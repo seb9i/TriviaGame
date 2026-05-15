@@ -124,12 +124,6 @@ struct MainMenu: View {
             }
 
             MenuButton(
-                title: "How to Play",
-                icon: "questionmark.circle",
-                style: .secondary
-            ) {}
-
-            MenuButton(
                 title: "Leaderboard",
                 icon: "trophy",
                 style: .secondary

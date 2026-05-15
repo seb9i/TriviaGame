@@ -55,7 +55,7 @@ struct MenuButton: View {
     private var buttonBackground: some View {
         switch style {
         case .primary:
-            Color(red: 0.85, green: 0.90, blue: 0.85) // soft green
+            Color(red: 0.85, green: 0.90, blue: 0.85)
         case .secondary:
             Color.white
         }

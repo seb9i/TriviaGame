@@ -1,15 +1,19 @@
 import SwiftUI
 
 struct GameOverView: View {
+
     let score: Int
     let onPlayAgain: () -> Void
     let onMainMenu: () -> Void
 
     var body: some View {
+
         ZStack {
+
             background
 
             VStack {
+
                 Spacer()
 
                 titleSection
@@ -22,63 +26,84 @@ struct GameOverView: View {
 
                 buttonStack
 
-                Spacer(minLength: 60)
+                Spacer(minLength: 50)
             }
-            .padding(.horizontal, 32)
+            .padding(.horizontal, 24)
         }
     }
 
     private var background: some View {
-        LinearGradient(
-            colors: [
-                Color(red: 0.06, green: 0.06, blue: 0.14),
-                Color(red: 0.10, green: 0.04, blue: 0.22)
-            ],
-            startPoint: .topLeading,
-            endPoint: .bottomTrailing
-        )
-        .ignoresSafeArea()
+        Color(red: 0.96, green: 0.94, blue: 0.90)
+            .ignoresSafeArea()
     }
-    
+
     private var titleSection: some View {
-        VStack(spacing: 12) {
+
+        VStack(spacing: 4) {
+
             Text("GAME")
-                .font(.system(size: 52, weight: .black, design: .rounded))
-                .foregroundStyle(
-                    LinearGradient(
-                        colors: [.white, Color(red: 0.76, green: 0.60, blue: 1.0)],
-                        startPoint: .topLeading,
-                        endPoint: .bottomTrailing
-                    )
-                )
-                .tracking(8)
+                .font(.custom("MagicSaturday", size: 40))
+                .tracking(6)
 
             Text("OVER")
-                .font(.system(size: 72, weight: .black, design: .rounded))
-                .foregroundStyle(
-                    LinearGradient(
-                        colors: [.white, Color(red: 0.76, green: 0.60, blue: 1.0)],
-                        startPoint: .topLeading,
-                        endPoint: .bottomTrailing
-                    )
-                )
+                .font(.custom("MagicSaturday", size: 68))
         }
+        .foregroundStyle(
+            LinearGradient(
+                colors: [
+                    Color(red: 0.20, green: 0.20, blue: 0.30)
+                ],
+                startPoint: .topLeading,
+                endPoint: .bottomTrailing
+            )
+        )
     }
 
     private var scoreSection: some View {
-        VStack(spacing: 8) {
-            Text("Your Score")
-                .font(.system(size: 14, design: .monospaced))
-                .foregroundColor(.white.opacity(0.4))
+
+        VStack(spacing: 10) {
+
+            Text("Final Score")
+                .font(.system(size: 16,
+                              weight: .semibold,
+                              design: .rounded))
+                .foregroundColor(
+                    Color(red: 0.35, green: 0.35, blue: 0.45)
+                )
 
             Text("\(score)")
-                .font(.system(size: 48, weight: .black, design: .rounded))
-                .foregroundColor(.white)
+                .font(.system(size: 72,
+                              weight: .black,
+                              design: .rounded))
+                .foregroundColor(
+                    Color(red: 0.18, green: 0.18, blue: 0.25)
+                )
         }
+        .frame(maxWidth: .infinity)
+        .padding(.vertical, 36)
+        .background(
+            RoundedRectangle(cornerRadius: 30, style: .continuous)
+                .fill(Color.white.opacity(0.94))
+                .overlay(
+                    RoundedRectangle(cornerRadius: 30)
+                        .stroke(
+                            Color.black.opacity(0.06),
+                            lineWidth: 1
+                        )
+                )
+        )
+        .shadow(
+            color: .black.opacity(0.08),
+            radius: 12,
+            x: 0,
+            y: 8
+        )
     }
 
     private var buttonStack: some View {
+
         VStack(spacing: 16) {
+
             MenuButton(
                 title: "Play Again",
                 icon: "arrow.clockwise",
